@@ -48,25 +48,61 @@ func TestUnpack(t *testing.T) {
 	}
 }
 
-func TestUnpackWithEscape(t *testing.T) {
-	t.Skip() // Remove if task with asterisk completed
-
+func TestUnpacWithPunctuationMarks(t *testing.T) {
 	for _, tst := range [...]test{
 		{
-			input:    `qwe\4\5`,
-			expected: `qwe45`,
+			input:    "!!!",
+			expected: "!!!",
 		},
 		{
-			input:    `qwe\45`,
-			expected: `qwe44444`,
+			input:    "!!?4",
+			expected: "!!????",
+		},
+	} {
+		result, err := Unpack(tst.input)
+		require.Equal(t, tst.err, err)
+		require.Equal(t, tst.expected, result)
+	}
+}
+
+func TestUnpacWithPunctuationMarksAndLetters(t *testing.T) {
+	for _, tst := range [...]test{
+		{
+			input:    "a!a!a!a",
+			expected: "a!a!a!a",
 		},
 		{
-			input:    `qwe\\5`,
-			expected: `qwe\\\\\`,
+			input:    "!ab!?4",
+			expected: "!ab!????",
 		},
 		{
-			input:    `qwe\\\3`,
-			expected: `qwe\3`,
+			input:    "ab!?4",
+			expected: "ab!????",
+		},
+	} {
+		result, err := Unpack(tst.input)
+		require.Equal(t, tst.err, err)
+		require.Equal(t, tst.expected, result)
+	}
+}
+
+func TestUnpacWithEmoji(t *testing.T) {
+	for _, tst := range [...]test{
+		{
+			input:    "🥰",
+			expected: "🥰",
+		},
+		{
+			input:    "🥰4",
+			expected: "🥰🥰🥰🥰",
+		},
+		{
+			input:    "ab🥰4",
+			expected: "ab🥰🥰🥰🥰",
+		},
+		{
+			input:    "ab5🥰4",
+			expected: "abbbbb🥰🥰🥰🥰",
 		},
 	} {
 		result, err := Unpack(tst.input)
