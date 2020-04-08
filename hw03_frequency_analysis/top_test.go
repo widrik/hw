@@ -58,3 +58,21 @@ func TestTop10(t *testing.T) {
 		}
 	})
 }
+
+func TestSmallString(t *testing.T) {
+	expected := []string{"о", "нет"}
+	assert.ElementsMatch(t, expected, Top10("о нет"))
+
+	expected2 := []string{"о", "нет"}
+	assert.ElementsMatch(t, expected2, Top10("о нет о нет о нет о нет о нет о о о о о о о о о о о о о о о о"))
+}
+
+func TestSpacesString(t *testing.T) {
+	expected := []string{}
+	assert.ElementsMatch(t, expected, Top10("        "))
+}
+
+func TestTabsString(t *testing.T) {
+	expected := []string{}
+	assert.ElementsMatch(t, expected, Top10("					"))
+}
