@@ -1,4 +1,4 @@
-module github.com/widrik/hw03_frequency_analysis
+module github.com/widrik/hw/hw03_frequency_analysis
 
 go 1.14
 
