@@ -7,13 +7,15 @@ import (
 
 const top = 10
 
-type WordStatistic struct {
+type wordStatistic struct {
 	Word  string
 	Count int
 }
 
+var regexpSplit = regexp.MustCompile(`[\s\t\r\n]+`)
+
 func splitTextToParts(inputText string) []string {
-	return regexp.MustCompile(`[\s\t\r\n]+`).Split(inputText, -1)
+	return regexpSplit.Split(inputText, -1)
 }
 
 func Top10(inputText string) []string {
@@ -30,9 +32,9 @@ func Top10(inputText string) []string {
 		}
 	}
 
-	words := []WordStatistic{}
+	var words = make([]wordStatistic, len(wordsList))
 	for word, count := range wordsList {
-		words = append(words, WordStatistic{word, count})
+		words = append(words, wordStatistic{word, count})
 	}
 
 	sort.Slice(words, func(i, j int) bool {
@@ -46,7 +48,7 @@ func Top10(inputText string) []string {
 		limit = top
 	}
 
-	result := []string{}
+	var result = make([]string, limit)
 	for _, word := range words[:limit] {
 		result = append(result, word.Word)
 	}
