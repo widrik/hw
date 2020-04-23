@@ -48,7 +48,7 @@ func Top10(inputText string) []string {
 		limit = top
 	}
 
-	var result []string
+	var result = make([]string, 0, limit)
 	for _, word := range words[:limit] {
 		result = append(result, word.Word)
 	}
