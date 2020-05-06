@@ -48,4 +48,25 @@ func TestList(t *testing.T) {
 		}
 		require.Equal(t, []int{50, 30, 10, 40, 60, 80, 70}, elems)
 	})
+
+	t.Run("different types elements", func(t *testing.T) {
+		l := NewList()
+
+		l.PushFront(nil)
+		l.PushFront("abc")
+		l.PushFront(3)
+		l.PushFront(3.1)
+
+		require.Equal(t, l.Len(), 4)
+	})
+
+	t.Run("one element", func(t *testing.T) {
+		l := NewList()
+
+		l.PushFront(111)
+
+		require.Equal(t, l.Len(), 1)
+		require.Equal(t, l.Front().Value, 111)
+		require.Equal(t, l.Front().Value, l.Back().Value)
+	})
 }

@@ -50,7 +50,41 @@ func TestCache(t *testing.T) {
 	})
 
 	t.Run("purge logic", func(t *testing.T) {
-		// Write me
+		c := NewCache(5)
+
+		c.Set("aaa", 100)
+		c.Set("bbb", 200)
+		c.Set("ccc", 300)
+		c.Set("ddd", 400)
+		c.Set("eee", 500)
+
+		c.Clear()
+
+		val, ok := c.Get("aaa")
+		require.Equal(t, val, nil)
+		require.Equal(t, ok, false)
+
+		val, ok = c.Get("bbb")
+		require.Equal(t, val, nil)
+		require.Equal(t, ok, false)
+	})
+
+	t.Run("add more elements then capacity", func(t *testing.T) {
+		c := NewCache(3)
+
+		c.Set("aaa", 100)
+		c.Set("bbb", 200)
+		c.Set("ccc", 300)
+		c.Set("ddd", 400)
+		c.Set("eee", 500)
+
+		val, ok := c.Get("aaa")
+		require.Equal(t, val, nil)
+		require.Equal(t, ok, false)
+
+		val, ok = c.Get("bbb")
+		require.Equal(t, val, nil)
+		require.Equal(t, ok, false)
 	})
 }
 
