@@ -10,7 +10,7 @@ var ErrRoutinesCount = errors.New("routines count should be more than 0")
 
 type Task func() error
 
-// Run starts tasks in n goroutines and stops its work when receiving M errors from tasks
+// Run starts tasks in n goroutines and stops its work when receiving M errors from tasks.
 func Run(tasks []Task, n int, m int) error {
 	err := validateParams(n, m)
 
