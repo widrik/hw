@@ -10,9 +10,9 @@ var ErrRoutinesCount = errors.New("routines count should be more than 0")
 
 type Task func() error
 
-// Run starts tasks in N goroutines and stops its work when receiving M errors from tasks
-func Run(tasks []Task, N int, M int) error {
-	err := validateParams(N, M)
+// Run starts tasks in n goroutines and stops its work when receiving M errors from tasks
+func Run(tasks []Task, n int, m int) error {
+	err := validateParams(n, m)
 
 	if err != nil {
 		return err
@@ -20,14 +20,14 @@ func Run(tasks []Task, N int, M int) error {
 
 	var errorsCount = 0
 	var wg = sync.WaitGroup{}
-	var m = sync.Mutex{}
+	var mut = sync.Mutex{}
 	var tasksCount = len(tasks)
 
-	if N > tasksCount {
-		N = tasksCount
+	if n > tasksCount {
+		n = tasksCount
 	}
 
-	wg.Add(N)
+	wg.Add(n)
 
 	tasksCh := make(chan Task, tasksCount)
 	for _, task := range tasks {
@@ -35,7 +35,7 @@ func Run(tasks []Task, N int, M int) error {
 	}
 	close(tasksCh)
 
-	for i := 0; i < N; i++ {
+	for i := 0; i < n; i++ {
 		go func() {
 			defer wg.Done()
 
@@ -47,24 +47,24 @@ func Run(tasks []Task, N int, M int) error {
 				}
 
 				err := task()
-				m.Lock()
+				mut.Lock()
 
 				if err != nil {
 					errorsCount++
 				}
 
-				if errorsCount == M {
-					m.Unlock()
+				if errorsCount == m {
+					mut.Unlock()
 					return
 				}
-				m.Unlock()
+				mut.Unlock()
 			}
 		}()
 	}
 
 	wg.Wait()
 
-	if errorsCount >= M {
+	if errorsCount >= m {
 		return ErrErrorsLimitExceeded
 	}
 
