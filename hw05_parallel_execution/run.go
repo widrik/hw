@@ -71,14 +71,14 @@ func Run(tasks []Task, n int, m int) error {
 	return nil
 }
 
-func validateParams(N int, M int) error {
+func validateParams(n int, m int) error {
 	var err error
 
-	if N <= 0 {
+	if n <= 0 {
 		err = ErrRoutinesCount
 	}
 
-	if M <= 0 {
+	if m <= 0 {
 		err = ErrErrorsLimitExceeded
 	}
 
