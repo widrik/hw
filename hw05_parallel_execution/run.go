@@ -59,7 +59,6 @@ func Run(tasks []Task, N int, M int) error {
 				}
 				m.Unlock()
 			}
-
 		}()
 	}
 
