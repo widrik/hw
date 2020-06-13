@@ -10,6 +10,34 @@ type (
 type Stage func(in In) (out Out)
 
 func ExecutePipeline(in In, done In, stages ...Stage) Out {
-	// Place your code here
-	return nil
+	stagesLen := len(stages)
+	resOut := make(Bi)
+
+	if stagesLen == 0 {
+		close(resOut)
+		return resOut
+	}
+
+	pipeline := in
+	for _, stage := range stages {
+		pipeline = stage(pipeline)
+	}
+
+	go func() {
+		defer close(resOut)
+
+		for {
+			select {
+			case <-done:
+				return
+			case val, ok := <-pipeline:
+				if !ok {
+					return
+				}
+				resOut <- val
+			}
+		}
+	}()
+
+	return resOut
 }
