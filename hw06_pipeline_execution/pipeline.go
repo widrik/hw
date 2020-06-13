@@ -11,12 +11,12 @@ type Stage func(in In) (out Out)
 
 func ExecutePipeline(in In, done In, stages ...Stage) Out {
 	stagesLen := len(stages)
-	resOut := make(Bi)
 
 	if stagesLen == 0 {
-		close(resOut)
-		return resOut
+		return nil
 	}
+
+	resOut := make(Bi)
 
 	pipeline := in
 	for _, stage := range stages {
