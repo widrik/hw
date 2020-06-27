@@ -15,6 +15,9 @@ with new line)
 UNSET is ()
 arguments are arg1=1 arg2=2'
 
+echo -e "\n1) EXPECTED ${expected}\n"
+echo -e "2) RESULT ${result}\n"
+
 [ "${result}" = "${expected}" ] || (echo -e "invalid output: ${result}" && exit 1)
 
 rm -f go-envdir
