@@ -25,7 +25,7 @@ func main() {
 	environment, err := ReadDir(environmentPath)
 
 	if err != nil {
-		log.Fatal("Environment error: $d", err)
+		log.Fatalf("Environment error: %d", err)
 	}
 
 	os.Exit(RunCmd(command, environment))
