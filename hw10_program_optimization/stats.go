@@ -3,64 +3,38 @@ package hw10_program_optimization //nolint:golint,stylecheck
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"io"
 	"regexp"
 	"strings"
 )
 
 type User struct {
-	ID       int
-	Name     string
-	Username string
+	ID       int    `json:"-"`
+	Name     string `json:"-"`
+	Username string `json:"-"`
 	Email    string
-	Phone    string
-	Password string
-	Address  string
+	Phone    string `json:"-"`
+	Password string `json:"-"`
+	Address  string `json:"-"`
 }
 
 type DomainStat map[string]int
 
 func GetDomainStat(r io.Reader, domain string) (DomainStat, error) {
-	u, err := getUsers(r)
-	if err != nil {
-		return nil, fmt.Errorf("get users error: %s", err)
-	}
-	return countDomains(u, domain)
-}
-
-type users []string
-
-var (
-	user User
-	validUsersCount int
-)
-
-func getUsers(r io.Reader) (result users, err error) {
+	var user User
+	result := make(DomainStat, 1000)
+	domainRegexp := regexp.MustCompile("\\." + domain)
 	scanner := bufio.NewScanner(r)
 
-	validUsersCount = 0
 	for scanner.Scan() {
-		if err = json.Unmarshal(scanner.Bytes(), &user); err != nil {
-			return
+		if err := json.Unmarshal(scanner.Bytes(), &user); err != nil {
+			return result, err
 		}
-		result = append(result, user.Email)
-		validUsersCount++
-	}
-	return
-}
 
-func countDomains(u users, domain string) (DomainStat, error) {
-	result := make(DomainStat)
-
-	domainRegexp := regexp.MustCompile("\\."+domain)
-
-	for _, userEmail := range u[:validUsersCount] {
-		if userEmail != "" {
-			if domainRegexp.MatchString(userEmail) {
-				result[strings.ToLower(strings.SplitN(userEmail, "@", 2)[1])]++
-			}
+		if domainRegexp.MatchString(user.Email) {
+			result[strings.ToLower(strings.SplitN(user.Email, "@", 2)[1])]++
 		}
 	}
+
 	return result, nil
 }
