@@ -1,10 +1,15 @@
 build:
-	go build ./... -o calendar
+	go build -o calendar ./cmd/calendar/main.go
+
+run:
+	go run ./cmd/calendar/main.go -config ./config/main.json
 
 test:
-	go test -race ./...
+	go test -v -count=1 -race -gcflags=-l -timeout=30s ./tests
 
 lint:
 	golangci-lint run ./...
+
+
 
 .PHONY: build

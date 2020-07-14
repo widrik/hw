@@ -1,0 +1,10 @@
+{
+  "HTTPServer": {
+    "Host": "127.0.0.1",
+    "Port": 5080
+  },
+  "Logging": {
+    "File": "/logs/log.txt",
+    "Level": "debug"
+  }
+}
