@@ -19,7 +19,6 @@ type Configuration struct {
 var (
 	ErrFilePathEmpty   = errors.New("File path is empty")
 	ErrReadFile        = errors.New("Can't read file")
-	ErrCannotParseFile = errors.New("Can't parse file")
 )
 
 func Init(path string) (Configuration, error) {
@@ -36,7 +35,7 @@ func Init(path string) (Configuration, error) {
 	}
 
 	if err := viper.Unmarshal(&configuration); err != nil {
-		return configuration, ErrCannotParseFile
+		return configuration, ErrReadFile
 	}
 
 	return configuration, nil

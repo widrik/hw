@@ -1,0 +1,10 @@
+{
+  "HTTPServer": {
+    "Host": "test_host",
+    "Port": 1111
+  },
+  "Logging": {
+    "File": "/logs/log.txt",
+    "Level": "debug"
+  }
+}
