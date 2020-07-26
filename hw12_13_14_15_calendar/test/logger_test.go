@@ -14,12 +14,12 @@ func TestLogger(t *testing.T) {
 	})
 
 	t.Run("Not valid level", func(t *testing.T) {
-		err := logging.Init("blabla", "test.txt")
+		err := logging.Init("blabla", "testdata/test.txt")
 		require.Error(t, err)
 	})
 
 	t.Run("Ok", func(t *testing.T) {
-		err := logging.Init("error", "test.txt")
+		err := logging.Init("error", "testdata/test.txt")
 		require.NoError(t, err)
 	})
 }

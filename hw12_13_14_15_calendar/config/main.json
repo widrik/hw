@@ -6,5 +6,15 @@
   "Logging": {
     "File": "/logs/log.txt",
     "Level": "debug"
+  },
+  "Storage": {
+    "Type": "inmemory"
+  },
+  "Database": {
+    "Name": "levshina",
+    "Host": "127.0.0.1",
+    "Port": 5432,
+    "User": "levshina",
+    "Password": ""
   }
 }

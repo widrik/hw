@@ -14,6 +14,16 @@ type Configuration struct {
 		File  string
 		Level string
 	}
+	Storage struct{
+		Type string
+	}
+	Database struct {
+		Name string
+		Host string
+		Port int
+		User string
+		Password string
+	}
 }
 
 var (
