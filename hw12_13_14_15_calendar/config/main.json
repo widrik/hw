@@ -4,7 +4,7 @@
     "Port": 5080
   },
   "Logging": {
-    "File": "/logs/log.txt",
+    "File": "./logs/log.txt",
     "Level": "debug"
   },
   "Storage": {

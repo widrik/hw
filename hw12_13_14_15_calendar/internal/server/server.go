@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"net/http"
 	"time"
 )
@@ -26,16 +27,18 @@ func NewWebServer(handler http.Handler, listenAddress string) *Server {
 	return &Server{server: server}
 }
 
-func (s Server) Start() error {
-	err := s.server.ListenAndServe()
+func (srv Server) Start() error {
+	err := srv.server.ListenAndServe()
 	if err == http.ErrServerClosed {
 		return nil
 	}
 	return err
 }
 
-func (s Server) Stop(timeout time.Duration) error {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-	return s.server.Shutdown(ctx)
+func (srv Server) Stop(timeout time.Duration) error {
+	if err := srv.server.Shutdown(context.Background()); err != nil {
+		return err
+	}
+
+	return nil
 }

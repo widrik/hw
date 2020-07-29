@@ -2,10 +2,12 @@ package main
 
 import (
 	"flag"
-	"log"
-
+	"fmt"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/config"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/logging"
+	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/server"
+	"log"
+	"net/http"
 )
 
 const (
@@ -13,11 +15,16 @@ const (
 	SqlStorage = "sql"
 )
 
+var (
+	configFile string
+)
+
+func init() {
+	flag.StringVar(&configFile, ConfigFlag, "", "Path to config file")
+}
+
 func main() {
 	flag.Parse()
-
-	var configFile string
-	flag.StringVar(&configFile, ConfigFlag, "", "Path to config file")
 
 	// Config
 	configuration, err := config.Init(configFile)
@@ -33,12 +40,22 @@ func main() {
 
 	// Storage
 	if configuration.Storage.Type == SqlStorage {
-
+	//	connectionToDb := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", configuration.Database.Host, configuration.Database.Port, configuration.Database.User, configuration.Database.Password, configuration.Database.Name)
+	/*	repo, err := sql.NewDbConnection(connectionToDb)
+		if err != nil {
+			log.Fatal(err)
+		} */
 	} else {
-
+	//	repo := new(inmemory.Repo)
 	}
 
 	// Server
-
-
+	mux := http.NewServeMux()
+	mux.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello World!")
+	})
+	webServer := server.NewWebServer(mux, configuration.HTTPServer.Host+":"+configuration.HTTPServer.Port)
+	if err := webServer.Start(); err != nil {
+		log.Fatal(err)
+	}
 }

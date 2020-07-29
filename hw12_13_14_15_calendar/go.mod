@@ -3,6 +3,7 @@ module github.com/widrik/hw/hw12_13_14_15_calendar
 go 1.14
 
 require (
+	github.com/Djarvur/go-err113 v0.1.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/google/uuid v1.1.1
 	github.com/jmoiron/sqlx v1.2.0 // indirect
@@ -14,4 +15,5 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	go.uber.org/zap v1.15.0
+	golang.org/x/tools v0.0.0-20200729173947-1c30660f9f89 // indirect
 )
