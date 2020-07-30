@@ -21,8 +21,8 @@ func CreateSettings(host string, port int) (*Settings, error) {
 
 func NewWebServer(handler http.Handler, listenAddress string) *Server {
 	server := &http.Server{
-		Addr:              listenAddress,
-		Handler:           handler,
+		Addr:    listenAddress,
+		Handler: handler,
 	}
 	return &Server{server: server}
 }

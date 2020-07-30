@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+
 	"github.com/spf13/viper"
 )
 
@@ -14,21 +15,21 @@ type Configuration struct {
 		File  string
 		Level string
 	}
-	Storage struct{
+	Storage struct {
 		Type string
 	}
 	Database struct {
-		Name string
-		Host string
-		Port int
-		User string
+		Name     string
+		Host     string
+		Port     int
+		User     string
 		Password string
 	}
 }
 
 var (
-	ErrFilePathEmpty   = errors.New("File path is empty")
-	ErrReadFile        = errors.New("Can't read file")
+	ErrFilePathEmpty = errors.New("file path is empty")
+	ErrReadFile      = errors.New("can't read file")
 )
 
 func Init(path string) (Configuration, error) {

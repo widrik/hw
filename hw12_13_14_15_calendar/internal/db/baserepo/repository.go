@@ -2,12 +2,13 @@ package baserepo
 
 import (
 	"errors"
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Event struct {
-	Id          uuid.UUID
+	ID          uuid.UUID
 	Title       string
 	Description string
 	StartedAt   time.Time
@@ -28,6 +29,6 @@ type EventsRepo interface {
 type Repo struct{}
 
 var (
-	ErrEventNotFound = errors.New("Event not found")
-	ErrDateBusy = errors.New("Time is busy")
+	ErrEventNotFound = errors.New("event not found")
+	ErrDateBusy      = errors.New("time is busy")
 )

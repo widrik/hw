@@ -1,16 +1,16 @@
 package inmemory
 
 import (
+	"sync"
+
 	"github.com/google/uuid"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/baserepo"
-	"sync"
 )
 
 var _ baserepo.EventsRepo = (*Repo)(nil)
 
 type Repo struct {
 	mx   sync.Mutex
-	id   int64
 	list map[uuid.UUID]baserepo.Event
 }
 
@@ -34,9 +34,9 @@ func (r *Repo) Add(event baserepo.Event) (uuid.UUID, error) {
 		}
 	}
 
-	r.list[event.Id] = event
+	r.list[event.ID] = event
 
-	return event.Id, err
+	return event.ID, err
 }
 
 func (r *Repo) Update(uuid uuid.UUID, event baserepo.Event) error {
@@ -44,8 +44,8 @@ func (r *Repo) Update(uuid uuid.UUID, event baserepo.Event) error {
 	defer r.mx.Unlock()
 
 	for _, e := range r.list {
-		if e.Id == uuid {
-			r.list[e.Id] = event
+		if e.ID == uuid {
+			r.list[e.ID] = event
 
 			return nil
 		}

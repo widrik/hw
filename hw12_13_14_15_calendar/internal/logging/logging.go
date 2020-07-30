@@ -27,11 +27,11 @@ func Init(lvl string, file string) error {
 	case DebugLvl:
 		atom = zap.NewAtomicLevelAt(zapcore.DebugLevel)
 	default:
-		return errors.New("Level does not exist")
+		return errors.New("level does not exist")
 	}
 
 	if file == "" {
-		return errors.New("File is wrong")
+		return errors.New("file is wrong")
 	}
 
 	config := zap.NewProductionConfig()

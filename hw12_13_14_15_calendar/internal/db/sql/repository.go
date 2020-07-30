@@ -14,7 +14,7 @@ type Repo struct {
 	base *sqlx.DB
 }
 
-func NewDbConnection(sourceName string) (*sqlx.DB, error) {
+func NewDBConnection(sourceName string) (*sqlx.DB, error) {
 	db, err := sqlx.Connect("postgres", sourceName)
 	if err != nil {
 		log.Fatalln(err)
