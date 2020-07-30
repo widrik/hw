@@ -13,4 +13,7 @@ lint: install-deps
 install:
 	go mod download
 
+install-deps:
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint
+
 .PHONY: build
