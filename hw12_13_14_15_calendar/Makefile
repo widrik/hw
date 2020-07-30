@@ -10,4 +10,7 @@ test:
 lint: install-deps
 	golangci-lint run ./...
 
+install:
+	go mod download
+
 .PHONY: build
