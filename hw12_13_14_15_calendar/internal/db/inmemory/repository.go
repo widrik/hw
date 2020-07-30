@@ -62,11 +62,26 @@ func (r *Repo) Delete(uuid uuid.UUID) error {
 	return nil
 }
 
+func (r *Repo) GetEventByID(uuid uuid.UUID) (baserepo.Event, error) {
+	r.mx.Lock()
+	defer r.mx.Unlock()
+
+	for _, e := range r.list {
+		if e.ID == uuid {
+			return r.list[e.ID], nil
+		}
+	}
+
+	emptyEvent := baserepo.Event{}
+
+	return emptyEvent, baserepo.ErrEventNotFound
+}
+
 func (r *Repo) GetList() ([]baserepo.Event, error) {
 	r.mx.Lock()
 	defer r.mx.Unlock()
 
-	var eventList = make([]baserepo.Event, 0, len(r.list))
+	eventList := make([]baserepo.Event, 0, len(r.list))
 
 	for _, event := range r.list {
 		eventList = append(eventList, event)

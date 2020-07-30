@@ -24,6 +24,7 @@ type EventsRepo interface {
 	Update(uuid uuid.UUID, event Event) error
 	Delete(uuid uuid.UUID) error
 	GetList() ([]Event, error)
+	GetEventByID(uuid uuid.UUID) (Event, error)
 }
 
 type Repo struct{}
