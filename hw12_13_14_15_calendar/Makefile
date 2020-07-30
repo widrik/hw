@@ -7,8 +7,7 @@ run:
 test:
 	go test -v -count=1 -race -gcflags=-l -timeout=30s ./test
 
-lint:
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint
+lint: install-deps
 	golangci-lint run ./...
 
 .PHONY: build
