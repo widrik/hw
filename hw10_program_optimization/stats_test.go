@@ -36,4 +36,17 @@ func TestGetDomainStat(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, DomainStat{}, result)
 	})
+
+	t.Run("empty json input", func(t *testing.T) {
+		inputString := ""
+		result, err := GetDomainStat(bytes.NewBufferString(inputString), "com")
+		require.NoError(t, err)
+		require.Equal(t, DomainStat{}, result)
+	})
+
+	t.Run("invalid input", func(t *testing.T) {
+		inputString := `{"Id":1,"Name":"Howard Mend`
+		_, err := GetDomainStat(bytes.NewBufferString(inputString), "com")
+		require.Error(t, err)
+	})
 }
