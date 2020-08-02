@@ -1,8 +1,6 @@
 package sql
 
 import (
-	"log"
-
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/baserepo"
@@ -16,9 +14,6 @@ type Repo struct {
 
 func NewDBConnection(sourceName string) (*sqlx.DB, error) {
 	db, err := sqlx.Connect("postgres", sourceName)
-	if err != nil {
-		log.Fatalln(err)
-	}
 
 	return db, err
 }

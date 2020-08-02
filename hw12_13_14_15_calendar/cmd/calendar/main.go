@@ -11,7 +11,7 @@ import (
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/server"
 )
 
-const ConfigFlag string = "config"
+const ConfigFlag = "config"
 
 var configFile string
 

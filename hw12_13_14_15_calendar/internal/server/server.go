@@ -15,8 +15,8 @@ type Server struct {
 	server *http.Server
 }
 
-func CreateSettings(host string, port int) (*Settings, error) {
-	return &Settings{host, port}, nil
+func CreateSettings(host string, port int) *Settings {
+	return &Settings{host, port}
 }
 
 func NewWebServer(handler http.Handler, listenAddress string) *Server {
