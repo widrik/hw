@@ -36,9 +36,9 @@ type Database struct {
 type Configuration struct {
 	HTTPServer HTTPServer
 	GRPCServer GRPCServer
-	Logging Logging
-	Storage Storage
-	Database Database
+	Logging    Logging
+	Storage    Storage
+	Database   Database
 }
 
 var (

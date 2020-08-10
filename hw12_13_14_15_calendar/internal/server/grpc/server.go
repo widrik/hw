@@ -53,14 +53,13 @@ func (srv *Server) Add(ctx context.Context, request *spec.AddRequest) (*spec.Add
 	}
 
 	id, err := calenderApp.Add(event)
-
 	if err != nil {
 		return nil, err
-	} else {
-		return &spec.AddResponse{
-			Uuid: id.String(),
-		}, nil
 	}
+
+	return &spec.AddResponse{
+		Uuid: id.String(),
+	}, nil
 }
 
 func (srv *Server) Update(ctx context.Context, request *spec.UpdateRequest) (*spec.UpdateResponse, error) {
@@ -74,58 +73,53 @@ func (srv *Server) Update(ctx context.Context, request *spec.UpdateRequest) (*sp
 
 func (srv *Server) Delete(ctx context.Context, request *spec.DeleteRequest) (*spec.DeleteResponse, error) {
 	id, err := uuid.Parse(request.Uuid)
-
 	if err != nil {
 		return nil, err
-	} else {
-		return &spec.DeleteResponse{}, calenderApp.Delete(id)
 	}
+
+	return &spec.DeleteResponse{}, calenderApp.Delete(id)
 }
 
-func (srv *Server) GetById(ctx context.Context, request *spec.GetByIdRequest) (*spec.GetByIdResponse, error) {
+func (srv *Server) GetByID(ctx context.Context, request *spec.GetByIdRequest) (*spec.GetByIdResponse, error) {
 	id, err := uuid.Parse(request.Uuid)
-
 	if err != nil {
 		return nil, err
-	} else {
-		event, err := calenderApp.GetEventByID(id)
-
-		if err != nil {
-			return nil, err
-		} else {
-			grpcEvent, err := eventToGrpc(event)
-
-			if err != nil {
-				return nil, err
-			}
-
-			response := spec.GetByIdResponse{
-				Event: grpcEvent,
-			}
-
-			return &response, nil
-		}
 	}
+
+	event, err := calenderApp.GetEventByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	grpcEvent, err := eventToGrpc(event)
+	if err != nil {
+		return nil, err
+	}
+
+	response := spec.GetByIdResponse{
+		Event: grpcEvent,
+	}
+
+	return &response, nil
 }
 
 func (srv *Server) GetList(ctx context.Context, request *spec.GetListRequest) (*spec.GetListResponse, error) {
 	events, err := calenderApp.GetList()
-
 	if err != nil {
 		return nil, err
-	} else {
-		responseEvents := make([]*spec.Event, len(events))
-
-		response := spec.GetListResponse{
-			Event: responseEvents,
-		}
-		for _, event := range events {
-			grpcEvent, err := eventToGrpc(event)
-			if err != nil {
-				return nil, err
-			}
-			response.Event = append(response.Event, grpcEvent)
-		}
-		return &response, nil
 	}
+
+	responseEvents := make([]*spec.Event, len(events))
+
+	response := spec.GetListResponse{
+		Event: responseEvents,
+	}
+	for _, event := range events {
+		grpcEvent, err := eventToGrpc(event)
+		if err != nil {
+			return nil, err
+		}
+		response.Event = append(response.Event, grpcEvent)
+	}
+	return &response, nil
 }

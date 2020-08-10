@@ -1,10 +1,10 @@
 package grpc
 
 import (
-	"github.com/google/uuid"
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
+	"github.com/google/uuid"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/api/spec"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/baserepo"
 )
@@ -12,7 +12,6 @@ import (
 func grpcToEvent(gerpcEvent *spec.Event) (baserepo.Event, error) {
 	var event baserepo.Event
 	idString, err := uuid.Parse(gerpcEvent.Uuid)
-
 	if err != nil {
 		return event, err
 	}

@@ -44,16 +44,7 @@ func main() {
 	}
 
 	// Storage
-	var repo baserepo.EventsRepo
-	if configuration.Storage.Type == "SqlStorage" {
-		connectionToDb := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", configuration.Database.Host, configuration.Database.Port, configuration.Database.User, configuration.Database.Password, configuration.Database.Name)
-		repo, err = sql.NewDBConnection(connectionToDb)
-		if err != nil {
-			zap.L().Error("init repo error", zap.Error(err))
-		}
-	} else {
-		repo = new(inmemory.Repo)
-	}
+	repo := initStorage(configuration)
 
 	// App
 	calenderApp := app.Calendar{
@@ -98,4 +89,20 @@ func main() {
 		}
 		return
 	}
+}
+
+func initStorage(configuration config.Configuration) baserepo.EventsRepo {
+	var repo baserepo.EventsRepo
+	var err error
+	if configuration.Storage.Type == "SqlStorage" {
+		connectionToDB := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", configuration.Database.Host, configuration.Database.Port, configuration.Database.User, configuration.Database.Password, configuration.Database.Name)
+		repo, err = sql.NewDBConnection(connectionToDB)
+		if err != nil {
+			zap.L().Error("init repo error", zap.Error(err))
+		}
+	} else {
+		repo = new(inmemory.Repo)
+	}
+
+	return repo
 }
