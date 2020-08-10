@@ -11,6 +11,11 @@ type HTTPServer struct {
 	Port string
 }
 
+type GRPCServer struct {
+	Host string
+	Port string
+}
+
 type Logging struct {
 	File  string
 	Level string
@@ -30,6 +35,7 @@ type Database struct {
 
 type Configuration struct {
 	HTTPServer HTTPServer
+	GRPCServer GRPCServer
 	Logging Logging
 	Storage Storage
 	Database Database

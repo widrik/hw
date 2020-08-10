@@ -12,10 +12,12 @@ type Repo struct {
 	base *sqlx.DB
 }
 
-func NewDBConnection(sourceName string) (*sqlx.DB, error) {
-	db, err := sqlx.Connect("postgres", sourceName)
+func NewDBConnection(sourceName string) (baserepo.EventsRepo, error) {
+	var DBConnection Repo
+	var err error
+	DBConnection.base, err = sqlx.Connect("postgres", sourceName)
 
-	return db, err
+	return &DBConnection, err
 }
 
 func (r *Repo) Add(event baserepo.Event) (uuid.UUID, error) {
