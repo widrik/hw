@@ -31,22 +31,18 @@ func init() {
 func main() {
 	flag.Parse()
 
-	// Config
 	configuration, err := config.Init(configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Logger
 	err = logging.Init(configuration.Logging.Level, configuration.Logging.File)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Storage
 	repo := initStorage(configuration)
 
-	// App
 	calenderApp := app.Calendar{
 		Repository: repo,
 	}
@@ -63,7 +59,7 @@ func main() {
 	defer func() {
 		if err := httpServer.Stop(); err != nil {
 			zap.L().Error("stopping of http server error", zap.Error(err))
-			
+
 			return
 		}
 	}()
