@@ -31,21 +31,20 @@ func init() {
 func main() {
 	flag.Parse()
 
+	// Config
 	configuration, err := config.Init(configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = logging.Init(configuration.Logging.Level, configuration.Logging.File)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// Logger
+	initLogging(configuration)
 
+	// Storage
 	repo := initStorage(configuration)
 
-	calenderApp := app.Calendar{
-		Repository: repo,
-	}
+	// App
+	calenderApp := app.Calendar{Repository: repo}
 
 	serversErrorsCh := make(chan error)
 
@@ -87,6 +86,13 @@ func main() {
 		}
 
 		return
+	}
+}
+
+func initLogging(configuration config.Configuration) {
+	err := logging.Init(configuration.Logging.Level, configuration.Logging.File)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
