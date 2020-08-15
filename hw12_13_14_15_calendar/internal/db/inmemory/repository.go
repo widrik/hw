@@ -31,6 +31,7 @@ func (r *Repo) Add(event baserepo.Event) (uuid.UUID, error) {
 	for _, e := range r.list {
 		if e.StartedAt == event.StartedAt {
 			err = baserepo.ErrDateBusy
+
 			break
 		}
 	}
@@ -51,6 +52,7 @@ func (r *Repo) Update(uuid uuid.UUID, event baserepo.Event) error {
 			return nil
 		}
 	}
+
 	return baserepo.ErrEventNotFound
 }
 

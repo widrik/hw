@@ -17,6 +17,7 @@ func NewCalendar(r baserepo.EventsRepo) Calendar {
 
 func (c *Calendar) Add(event baserepo.Event) (uuid.UUID, error) {
 	newEventUUID, err := c.Repository.Add(event)
+
 	return newEventUUID, err
 }
 
