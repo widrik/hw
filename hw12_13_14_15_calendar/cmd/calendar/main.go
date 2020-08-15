@@ -54,8 +54,7 @@ func main() {
 	serversErrorsCh := make(chan error)
 
 	// Http server
-	httpserver.Init(&calenderApp)
-	httpServer := httpserver.NewServer(net.JoinHostPort(configuration.HTTPServer.Host, configuration.HTTPServer.Port))
+	httpServer := httpserver.NewServer(&calenderApp, net.JoinHostPort(configuration.HTTPServer.Host, configuration.HTTPServer.Port))
 	go func() {
 		if err := httpServer.Start(); err != nil {
 			serversErrorsCh <- err
