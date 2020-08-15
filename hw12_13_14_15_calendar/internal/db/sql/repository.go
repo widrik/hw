@@ -34,6 +34,7 @@ func (r *Repo) Update(uuid uuid.UUID, event baserepo.Event) error {
 		return baserepo.ErrEventNotFound
 	}
 	_, err = r.base.NamedExec(`UPDATE events SET title=:title, description=:description, start_at=:start_at, finished_at=:finished_at,  user_id=:user_id, notify_at=:notify_at WHERE :uuid = :uuid`, event)
+
 	return err
 }
 

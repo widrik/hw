@@ -40,6 +40,7 @@ func (srv *Server) Start() error {
 		return err
 	}
 	err = srv.Server.Serve(lis)
+
 	return err
 }
 
@@ -122,5 +123,6 @@ func (srv *Server) GetList(ctx context.Context, request *spec.GetListRequest) (*
 		}
 		response.Event = append(response.Event, grpcEvent)
 	}
+	
 	return &response, nil
 }
