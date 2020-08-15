@@ -63,6 +63,7 @@ func main() {
 	defer func() {
 		if err := httpServer.Stop(); err != nil {
 			zap.L().Error("stopping of http server error", zap.Error(err))
+			
 			return
 		}
 	}()
@@ -82,11 +83,13 @@ func main() {
 	select {
 	case <-signalsCh:
 		signal.Stop(signalsCh)
+
 		return
 	case err = <-serversErrorsCh:
 		if err != nil {
 			zap.L().Error("server error", zap.Error(err))
 		}
+
 		return
 	}
 }
