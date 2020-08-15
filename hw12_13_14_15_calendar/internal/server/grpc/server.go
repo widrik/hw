@@ -15,8 +15,8 @@ import (
 var calenderApp *app.Calendar
 
 type Server struct {
-	server  *grpc.Server
-	address string
+	Server  *grpc.Server
+	Address string
 }
 
 func NewServer(calender *app.Calendar, listenAddress string) *Server {
@@ -27,23 +27,24 @@ func NewServer(calender *app.Calendar, listenAddress string) *Server {
 
 	srv := &Server{}
 	spec.RegisterCalendarServiceServer(grpcServer, srv)
-	srv.server = grpcServer
-	srv.address = listenAddress
+
+	srv.Server = grpcServer
+	srv.Address = listenAddress
 
 	return srv
 }
 
 func (srv *Server) Start() error {
-	lis, err := net.Listen("tcp", srv.address)
+	lis, err := net.Listen("tcp", srv.Address)
 	if err != nil {
 		return err
 	}
-	err = srv.server.Serve(lis)
+	err = srv.Server.Serve(lis)
 	return err
 }
 
 func (srv *Server) Stop() {
-	srv.server.GracefulStop()
+	srv.Server.GracefulStop()
 }
 
 func (srv *Server) Add(ctx context.Context, request *spec.AddRequest) (*spec.AddResponse, error) {
@@ -91,7 +92,7 @@ func (srv *Server) GetByID(ctx context.Context, request *spec.GetByIdRequest) (*
 		return nil, err
 	}
 
-	grpcEvent, err := eventToGrpc(event)
+	grpcEvent, err := EventToGrpc(event)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +116,7 @@ func (srv *Server) GetList(ctx context.Context, request *spec.GetListRequest) (*
 		Event: responseEvents,
 	}
 	for _, event := range events {
-		grpcEvent, err := eventToGrpc(event)
+		grpcEvent, err := EventToGrpc(event)
 		if err != nil {
 			return nil, err
 		}

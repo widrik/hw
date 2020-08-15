@@ -3,8 +3,15 @@
     "Host": "test_host",
     "Port": 1111
   },
+  "GRPCServer": {
+    "Host": "127.0.0.1",
+    "Port": 5081
+  },
   "Logging": {
     "File": "/logs/log.txt",
     "Level": "debug"
+  },
+  "Storage": {
+    "Type": "InMemory"
   }
 }

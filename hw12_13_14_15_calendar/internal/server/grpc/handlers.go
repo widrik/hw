@@ -29,7 +29,7 @@ func grpcToEvent(gerpcEvent *spec.Event) (baserepo.Event, error) {
 	return event, nil
 }
 
-func eventToGrpc(event baserepo.Event) (*spec.Event, error) {
+func EventToGrpc(event baserepo.Event) (*spec.Event, error) {
 	var grpcEvent *spec.Event
 
 	startedAt, err := ptypes.TimestampProto(event.StartedAt)

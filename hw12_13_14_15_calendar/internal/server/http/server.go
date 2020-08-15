@@ -28,11 +28,9 @@ type Server struct {
 }
 
 func NewServer(calendar *app.Calendar, listenAddress string) *Server {
-	calenderApp = calendar
-
 	server := &http.Server{
 		Addr:    listenAddress,
-		Handler: CreateHandler(),
+		Handler: CreateHandler(calendar),
 	}
 	return &Server{server: server}
 }
@@ -53,11 +51,12 @@ func (srv Server) Stop() error {
 	return nil
 }
 
-func CreateHandler() http.Handler {
+func CreateHandler(calendar *app.Calendar) http.Handler {
 	router := gin.Default()
 
 	zapL := zap.L()
 	router.Use(ginzap.Logger(3*time.Second, zapL))
+	calenderApp = calendar
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
