@@ -32,6 +32,7 @@ func NewServer(calendar *app.Calendar, listenAddress string) *Server {
 		Addr:    listenAddress,
 		Handler: CreateHandler(calendar),
 	}
+
 	return &Server{server: server}
 }
 
@@ -40,6 +41,7 @@ func (srv Server) Start() error {
 	if err == http.ErrServerClosed {
 		return nil
 	}
+
 	return err
 }
 
@@ -77,6 +79,7 @@ func Add(context *gin.Context) {
 	if err != nil {
 		log("read data error", err)
 		context.Writer.WriteHeader(statusServerError)
+
 		return
 	}
 	event := baserepo.Event{}
@@ -102,6 +105,7 @@ func Update(context *gin.Context) {
 	if err != nil {
 		log("uuid error", err)
 		context.Writer.WriteHeader(statusServerError)
+
 		return
 	}
 
@@ -109,6 +113,7 @@ func Update(context *gin.Context) {
 	if err != nil {
 		log("read data error", err)
 		context.Writer.WriteHeader(statusServerError)
+
 		return
 	}
 	event := baserepo.Event{}
@@ -152,6 +157,7 @@ func GetByID(context *gin.Context) {
 	if err != nil {
 		log("uuid error", err)
 		context.Writer.WriteHeader(statusServerError)
+
 		return
 	}
 
@@ -175,6 +181,7 @@ func GetList(context *gin.Context) {
 	if err != nil {
 		log("events not found", err)
 		context.Writer.WriteHeader(statusServerError)
+
 		return
 	}
 

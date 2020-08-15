@@ -123,6 +123,6 @@ func (srv *Server) GetList(ctx context.Context, request *spec.GetListRequest) (*
 		}
 		response.Event = append(response.Event, grpcEvent)
 	}
-	
+
 	return &response, nil
 }
