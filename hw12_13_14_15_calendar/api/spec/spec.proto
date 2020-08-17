@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+message Event {
+  string uuid = 1;
+  string title = 2;
+  string description = 3;
+  google.protobuf.Timestamp start = 4;
+  google.protobuf.Timestamp finish = 5;
+  int64 user_id = 6;
+  google.protobuf.Timestamp notify_time = 7;
+}
+
+message AddRequest {
+  Event event = 1;
+}
+
+message AddResponse {
+  string uuid = 1;
+}
+
+message UpdateRequest {
+  string uuid = 1;
+  Event event = 2;
+}
+
+message UpdateResponse {
+
+}
+
+message DeleteRequest {
+  string uuid = 1;
+}
+
+message DeleteResponse {
+
+}
+
+message GetByIdRequest {
+  string uuid = 1;
+}
+
+message GetByIdResponse {
+  Event event = 1;
+}
+
+message GetListRequest {
+
+}
+
+message GetListResponse {
+  repeated Event event = 1;
+}
+
+service CalendarService {
+  rpc Add(AddRequest) returns (AddResponse) {};
+  rpc Update(UpdateRequest) returns (UpdateResponse) {};
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {};
+  rpc GetByID(GetByIdRequest) returns (GetByIdResponse) {};
+  rpc GetList(GetListRequest) returns (GetListResponse) {};
+}

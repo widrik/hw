@@ -6,25 +6,39 @@ import (
 	"github.com/spf13/viper"
 )
 
+type HTTPServer struct {
+	Host string
+	Port string
+}
+
+type GRPCServer struct {
+	Host string
+	Port string
+}
+
+type Logging struct {
+	File  string
+	Level string
+}
+
+type Storage struct {
+	Type string
+}
+
+type Database struct {
+	Name     string
+	Host     string
+	Port     int
+	User     string
+	Password string
+}
+
 type Configuration struct {
-	HTTPServer struct {
-		Host string
-		Port string
-	}
-	Logging struct {
-		File  string
-		Level string
-	}
-	Storage struct {
-		Type string
-	}
-	Database struct {
-		Name     string
-		Host     string
-		Port     int
-		User     string
-		Password string
-	}
+	HTTPServer HTTPServer
+	GRPCServer GRPCServer
+	Logging    Logging
+	Storage    Storage
+	Database   Database
 }
 
 var (

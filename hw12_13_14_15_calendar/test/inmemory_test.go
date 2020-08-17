@@ -14,7 +14,7 @@ func TestMemRepo(t *testing.T) {
 		var r inmemory.Repo
 
 		event := baserepo.Event{
-			Id:          uuid.New(),
+			ID:          uuid.New(),
 			Title:       "Testing",
 			Description: "testing of what is here",
 			StartedAt:   time.Now(),
@@ -35,7 +35,7 @@ func TestMemRepo(t *testing.T) {
 		timeForEvent := time.Now()
 
 		event1 := baserepo.Event{
-			Id:          uuid.New(),
+			ID:          uuid.New(),
 			Title:       "Testing 1",
 			Description: "testing of what is here",
 			StartedAt:   timeForEvent,
@@ -47,7 +47,7 @@ func TestMemRepo(t *testing.T) {
 		}
 
 		event2 := baserepo.Event{
-			Id:          uuid.New(),
+			ID:          uuid.New(),
 			Title:       "Testing 2",
 			Description: "testing of what is here",
 			StartedAt:   timeForEvent,
@@ -69,7 +69,7 @@ func TestMemRepo(t *testing.T) {
 		var r inmemory.Repo
 
 		event := baserepo.Event{
-			Id:          uuid.New(),
+			ID:          uuid.New(),
 			Title:       "Testing",
 			Description: "testing of what is here",
 			StartedAt:   time.Now(),

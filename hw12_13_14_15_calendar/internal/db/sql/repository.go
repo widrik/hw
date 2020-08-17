@@ -1,8 +1,6 @@
 package sql
 
 import (
-	"log"
-
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/baserepo"
@@ -14,13 +12,12 @@ type Repo struct {
 	base *sqlx.DB
 }
 
-func NewDBConnection(sourceName string) (*sqlx.DB, error) {
-	db, err := sqlx.Connect("postgres", sourceName)
-	if err != nil {
-		log.Fatalln(err)
-	}
+func NewDBConnection(sourceName string) (baserepo.EventsRepo, error) {
+	var DBConnection Repo
+	var err error
+	DBConnection.base, err = sqlx.Connect("postgres", sourceName)
 
-	return db, err
+	return &DBConnection, err
 }
 
 func (r *Repo) Add(event baserepo.Event) (uuid.UUID, error) {
@@ -37,6 +34,7 @@ func (r *Repo) Update(uuid uuid.UUID, event baserepo.Event) error {
 		return baserepo.ErrEventNotFound
 	}
 	_, err = r.base.NamedExec(`UPDATE events SET title=:title, description=:description, start_at=:start_at, finished_at=:finished_at,  user_id=:user_id, notify_at=:notify_at WHERE :uuid = :uuid`, event)
+
 	return err
 }
 
