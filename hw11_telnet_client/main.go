@@ -72,7 +72,7 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Fprintf(os.Stderr, "...EOF\n")
-		
+
 		return
 	}
 }
