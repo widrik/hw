@@ -25,14 +25,14 @@ func main() {
 	flag.Parse()
 
 	log.Print("Args check")
-	args := flag.Args()
+	args := os.Args
 	if len(args) != argsLen {
 		log.Fatal("few arguments: should be " + strconv.Itoa(argsLen))
 	}
 
 	log.Print("Args check was ok")
-	host := args[0]
-	port := args[1]
+	host := args[argsLen-2]
+	port := args[argsLen-1]
 
 	client := NewTelnetClient(
 		net.JoinHostPort(host, port),
