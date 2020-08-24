@@ -65,12 +65,14 @@ func main() {
 	select {
 	case <-signlsCh:
 		signal.Stop(signlsCh)
+
 		return
 	case err = <-errorsCh:
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Fprintf(os.Stderr, "...EOF\n")
+		
 		return
 	}
 }
