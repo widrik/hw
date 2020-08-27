@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	zap_grpc "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/api/spec"
-	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/app"
+	app "github.com/widrik/hw/hw12_13_14_15_calendar/internal/app/calendar"
 	zap_logger "go.uber.org/zap"
 	"google.golang.org/grpc"
 )
@@ -111,7 +111,7 @@ func (srv *Server) GetList(ctx context.Context, request *spec.GetListRequest) (*
 		return nil, err
 	}
 
-	responseEvents := make([]*spec.Event, len(events))
+	responseEvents := make([]*spec.Event, 0, len(events))
 
 	response := spec.GetListResponse{
 		Event: responseEvents,

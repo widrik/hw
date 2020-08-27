@@ -1,24 +1,12 @@
 package config
 
 import (
-	"errors"
-
 	"github.com/spf13/viper"
 )
 
 type HTTPServer struct {
 	Host string
 	Port string
-}
-
-type GRPCServer struct {
-	Host string
-	Port string
-}
-
-type Logging struct {
-	File  string
-	Level string
 }
 
 type Storage struct {
@@ -40,11 +28,6 @@ type Configuration struct {
 	Storage    Storage
 	Database   Database
 }
-
-var (
-	ErrFilePathEmpty = errors.New("file path is empty")
-	ErrReadFile      = errors.New("can't read file")
-)
 
 func Init(path string) (Configuration, error) {
 	var configuration Configuration

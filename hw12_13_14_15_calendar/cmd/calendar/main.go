@@ -9,7 +9,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/app"
+	app "github.com/widrik/hw/hw12_13_14_15_calendar/internal/app/calendar"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/config"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/baserepo"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/inmemory"
@@ -44,7 +44,7 @@ func main() {
 	repo := initStorage(configuration)
 
 	// App
-	calenderApp := app.Calendar{Repository: repo}
+	calenderApp := app.NewCalendar(repo)
 
 	serversErrorsCh := make(chan error)
 

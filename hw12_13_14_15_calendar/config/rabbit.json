@@ -1,0 +1,10 @@
+{
+  "Host": "127.0.0.1",
+  "Port": 5085,
+  "QueueName": "calendar_queue",
+  "ExchangeName": "events",
+  "Logging": {
+    "File": "./logs/log_rabbit.txt",
+    "Level": "debug"
+  }
+}

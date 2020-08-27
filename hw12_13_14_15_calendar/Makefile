@@ -1,13 +1,15 @@
 build:
 	go build -o calendar ./cmd/calendar/main.go
+	go build -o calendar ./cmd/scheduler/main.go
+	go build -o calendar ./cmd/sender/main.go
 
 run:
 	go run ./cmd/calendar/main.go -config ./config/main.json
 
 test:
-	go test -v -count=1 -race -gcflags=-l -timeout=30s ./test
+    go test -v -count=1 -race -gcflags=-l -timeout=30s ./test
 
-lint: install-deps
+lint:  install-deps
 	golangci-lint run ./...
 
 prepare_gen:
@@ -17,7 +19,7 @@ prepare_gen:
         github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger \
         github.com/golang/protobuf/protoc-gen-go
 
-generate:
+generate: prepare_gen
 	go generate ./...
 
 install:
