@@ -8,7 +8,6 @@ import (
 
 type EvenetsSeviceInterface interface {
 	Connect() error
-	Reconnect(context.Context) (<-chan amqp.Delivery, error)
 	Stop() error
 	Listen(context.Context, func(<-chan amqp.Delivery)) error
 }

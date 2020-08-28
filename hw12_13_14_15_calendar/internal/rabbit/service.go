@@ -59,7 +59,8 @@ func (service *ServiceRabbit) Connect() error {
 	}()
 	zap.L().Info("connected was successful")
 
-	_, err = service.connectionCh.QueueDeclare(service.queueName, false, false, true, false, nil)
+
+
 	if err != nil {
 		return err
 	}
@@ -77,7 +78,7 @@ func (service *ServiceRabbit) Connect() error {
 	return nil
 }
 
-func (service *ServiceRabbit) Reconnect(context context.Context) (<-chan amqp.Delivery, error) {
+func (service *ServiceRabbit) reconnect(context context.Context) (<-chan amqp.Delivery, error) {
 	expBackOff := backoff.NewExponentialBackOff()
 	expBackOff.MaxElapsedTime = MaxElapsedTime
 	expBackOff.MaxInterval = MaxInterval
@@ -128,7 +129,7 @@ func (service *ServiceRabbit) Stop() error {
 }
 
 func (service *ServiceRabbit) Listen(context context.Context, msgsHandler func(<-chan amqp.Delivery)) error {
-	deliveredMessages, err := service.Reconnect(context)
+	deliveredMessages, err := service.reconnect(context)
 	if err != nil {
 		return err
 	}
@@ -137,7 +138,7 @@ func (service *ServiceRabbit) Listen(context context.Context, msgsHandler func(<
 		go msgsHandler(deliveredMessages)
 
 		if <-service.doneCh != nil {
-			deliveredMessages, err = service.Reconnect(context)
+			deliveredMessages, err = service.reconnect(context)
 			if err != nil {
 				return err
 			}

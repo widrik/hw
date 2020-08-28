@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	MaxElapsedTime  = time.Minute
+	MaxElapsedTime  = 4 * time.Minute
 	InitialInterval = time.Second
-	MaxInterval     = 20 * time.Second
+	MaxInterval     = 30 * time.Second
 	Multiplier      = 2
 )
 
