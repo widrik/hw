@@ -14,7 +14,7 @@ import (
 	schedulerApp "github.com/widrik/hw/hw12_13_14_15_calendar/internal/app/scheduler"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/config"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/logging"
-	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/rabbit"
+	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/publisher"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
@@ -35,7 +35,7 @@ func main() {
 		log.Fatal(err)
 	}
 	initLogging(configuration)
-	publisher, err := rabbit.InitPublisher(configuration)
+	pblshr, err := publisher.InitPublisher(configuration)
 	if err != nil {
 		zap.L().Error("fatal error", zap.Error(err))
 	}
@@ -52,7 +52,7 @@ func main() {
 	}()
 
 	client := spec.NewCalendarServiceClient(grpcConnection)
-	scheduler := schedulerApp.InitScheduler(publisher, client)
+	scheduler := schedulerApp.InitScheduler(pblshr, client)
 	defer func() {
 		err := scheduler.Stop()
 		if err != nil {

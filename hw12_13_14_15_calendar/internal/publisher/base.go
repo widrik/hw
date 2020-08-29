@@ -1,4 +1,4 @@
-package rabbit
+package publisher
 
 import (
 	"errors"
@@ -15,5 +15,6 @@ const (
 var (
 	ErrReconnect           = errors.New("reconnect error")
 	ErrNotValidAddressData = errors.New("not valid host ot port")
+	ErrQueue               = errors.New("queue error")
 	ErrChannelClosed       = errors.New("channel was closed")
 )
