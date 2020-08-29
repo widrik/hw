@@ -30,15 +30,11 @@ func init() {
 func main() {
 	flag.Parse()
 
-	// Config
 	configuration, err := config.InitSchedulerConfig(configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// Logger
 	initLogging(configuration)
-
 	publisher, err := rabbit.InitPublisher(configuration)
 	if err != nil {
 		zap.L().Error("fatal error", zap.Error(err))
