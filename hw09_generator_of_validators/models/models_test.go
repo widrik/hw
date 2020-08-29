@@ -43,6 +43,15 @@ func TestUserValidation(t *testing.T) {
 		requireOneFieldErr(t, errs, "Email")
 	})
 
+	t.Run("email regexp 2", func(t *testing.T) {
+		u := goodUser
+		u.Email = "ewefefwewfwefwefwefwefwefmail"
+
+		errs, err := u.Validate()
+		require.Nil(t, err)
+		requireOneFieldErr(t, errs, "Email")
+	})
+
 	t.Run("age borders", func(t *testing.T) {
 		u := goodUser
 

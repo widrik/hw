@@ -177,6 +177,7 @@ func prepareFieldType(expression ast.Expr) *FieldType {
 		if !ok {
 			return nil
 		}
+		
 		return &FieldType{
 			VarType: ident.Name,
 			Type:    "array",
