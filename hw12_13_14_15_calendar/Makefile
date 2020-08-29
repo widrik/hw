@@ -7,7 +7,7 @@ run:
 	go run ./cmd/calendar/main.go -config ./config/main.json
 
 test:
-    go test -v -count=1 -race -gcflags=-l -timeout=30s ./test
+	go test -v -count=1 -race -gcflags=-l -timeout=30s ./test
 
 lint:  install-deps
 	golangci-lint run ./...
