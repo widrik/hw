@@ -79,6 +79,7 @@ func main() {
 			select {
 			case <-notifyCh:
 				signal.Stop(notifyCh)
+
 				return
 			case <-notifyTick.C:
 				scheduler.Process()

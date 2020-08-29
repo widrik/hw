@@ -58,9 +58,6 @@ func (service *ServiceRabbit) Connect() error {
 		service.doneCh <- ErrChannelClosed
 	}()
 	zap.L().Info("connected was successful")
-
-
-
 	if err != nil {
 		return err
 	}
