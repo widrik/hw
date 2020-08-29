@@ -62,4 +62,14 @@ func TestTelnetClient(t *testing.T) {
 
 		wg.Wait()
 	})
+
+	t.Run("empty address for connection", func(t *testing.T) {
+		in := &bytes.Buffer{}
+		out := &bytes.Buffer{}
+		timeout, err := time.ParseDuration("0s")
+		require.Nil(t, err)
+
+		client := NewTelnetClient("", timeout, ioutil.NopCloser(in), out)
+		require.Error(t, client.Connect())
+	})
 }
