@@ -24,6 +24,7 @@ func CreateStructsData(astFile ast.File) (GeneratatedFile, error) {
 	if astFile.Decls == nil {
 		return generatedFile, errors.New("astFile error")
 	}
+	availableTypes := getAvailableTypes(astFile.Decls)
 
 	if astFile.Name == nil {
 		return generatedFile, errors.New("astFile error")
@@ -42,7 +43,7 @@ func CreateStructsData(astFile ast.File) (GeneratatedFile, error) {
 				continue
 			}
 
-			st, err := convertDataToStruct(*astTypeSpec)
+			st, err := convertDataToStruct(*astTypeSpec, availableTypes)
 			if err != nil {
 				return generatedFile, nil
 			}
@@ -55,21 +56,15 @@ func CreateStructsData(astFile ast.File) (GeneratatedFile, error) {
 	return generatedFile, nil
 }
 
-func convertDataToStruct(typeSpec ast.TypeSpec) (*Struct, error) {
-	resStruct := Struct{}
-
+func convertDataToStruct(typeSpec ast.TypeSpec, types map[string]string) (*Struct, error) {
 	structType, ok := typeSpec.Type.(*ast.StructType)
 	if !ok || typeSpec.Name == nil {
 		return nil, nil
 	}
-	resStruct.Name = typeSpec.Name.Name
-	resStruct.VarName = strings.ToLower(strings.Split(typeSpec.Name.Name, "")[0])
-
 	fields := structType.Fields
 	if fields == nil {
 		return nil, nil
 	}
-
 	fieldList := fields.List
 	if fieldList == nil {
 		return nil, nil
@@ -85,6 +80,11 @@ func convertDataToStruct(typeSpec ast.TypeSpec) (*Struct, error) {
 		if fieldType == nil {
 			continue
 		}
+		detectedType, ok := types[fieldType.VarType]
+		if !ok {
+			continue
+		}
+		fieldType.VarType = detectedType
 
 		resNames := []string{}
 		for _, name := range field.Names {
@@ -102,20 +102,67 @@ func convertDataToStruct(typeSpec ast.TypeSpec) (*Struct, error) {
 		if err != nil {
 			return nil, err
 		}
-		if len(validators) == 0 {
-			continue
-		}
-
-		newField := Field{
+		structFields = append(structFields, Field{
 			Names:      resNames,
 			Type:       *fieldType,
 			Validators: validators,
-		}
-		structFields = append(structFields, newField)
+		})
 	}
-	resStruct.Fields = structFields
+	if len(structFields) == 0 {
+		return nil, nil
+	}
 
-	return &resStruct, nil
+	return &Struct{
+		Name:    typeSpec.Name.Name,
+		VarName: strings.ToLower(typeSpec.Name.Name),
+		Fields:  structFields,
+	}, nil
+}
+
+func getAvailableTypes(decls []ast.Decl) map[string]string {
+	baseTypes := map[string]string{
+		"int":    "int",
+		"int64":  "int64",
+		"string": "string",
+	}
+
+	for _, decl := range decls {
+		genDecl, ok := decl.(*ast.GenDecl)
+		if !ok {
+			continue
+		}
+
+		for _, spec := range genDecl.Specs {
+			typeSpec, ok := spec.(*ast.TypeSpec)
+			if !ok {
+				continue
+			}
+
+			typeIdent, ok := typeSpec.Type.(*ast.Ident)
+			if !ok {
+				continue
+			}
+
+			if typeSpec.Name == nil {
+				continue
+			}
+
+			if _, ok := baseTypes[typeSpec.Name.Name]; !ok {
+				baseTypes[typeSpec.Name.Name] = typeIdent.Name
+			}
+		}
+	}
+
+	for typeIndex, base := range baseTypes {
+		newType, ok := baseTypes[base]
+		if !ok {
+			continue
+		}
+
+		baseTypes[typeIndex] = newType
+	}
+
+	return baseTypes
 }
 
 func prepareFieldType(expression ast.Expr) *FieldType {
@@ -153,6 +200,7 @@ func createValidators(fieldType string, tag string) ([]Validator, error) {
 		if err != nil {
 			return emptyValidators, err
 		}
+
 		validators = append(validators, validator)
 	}
 

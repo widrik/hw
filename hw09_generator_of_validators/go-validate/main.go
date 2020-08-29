@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"os"
 )
@@ -11,13 +10,15 @@ const (
 )
 
 func main() {
-	flag.Parse()
+	fileName := os.Getenv("GOFILE")
 
-	if len(os.Args) != minArgsCount {
-		log.Fatalf("Argument amount error: minimum %d arguments are required", minArgsCount)
+	if len(fileName) == 0 {
+		if len(os.Args) != minArgsCount {
+			log.Fatalf("Argument amount error: minimum %d arguments are required", minArgsCount)
+		}
+
+		fileName = os.Args[1]
 	}
-
-	fileName := os.Args[1]
 	err := Generate(fileName)
 	if err != nil {
 		log.Fatal(err)

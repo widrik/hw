@@ -1,16 +1,13 @@
 package main
 
 import (
-	"io"
-	"log"
-	"os"
-	"strings"
-
 	"go/ast"
 	"go/format"
 	"go/parser"
 	"go/token"
-	"path/filepath"
+	"io"
+	"log"
+	"os"
 )
 
 type GeneratatedFile struct {
@@ -40,13 +37,13 @@ type Validator struct {
 	Value interface{}
 }
 
-func Generate(fileName string) (error) {
+func Generate(fileName string) error {
 	astFile, err := parseFile(fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	resultFileName := strings.ReplaceAll(fileName, filepath.Ext(fileName), "_validator.go")
+	resultFileName := fileName[:len(fileName)-3] + "_generated.go"
 	resultFile, err := os.Create(resultFileName)
 	defer func() {
 		err := resultFile.Close()

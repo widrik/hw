@@ -29,30 +29,32 @@ type ValidationError struct {
 	Err string
 }
 
+{{range $structIdx, $struct := .Structs}}
 func ({{$struct.VarName}} {{$struct.Name}}) Validate() ([]ValidationError, error) {
-	errs := []ValidationError
+	var errs []ValidationError
 	{{range $fieldIdx, $field := .Fields}}
 		{{range $nameIdx, $name := $field.Names}}
 			{{if eq $field.Type.Type "array"}}
 	for i := range {{$struct.VarName}}.{{$name}} {
 			{{end}}
-			{{if eq $field.Type.Name "string"}}
-				{{range $validatorId, $validator := $field.Validators}}
+
+			{{if eq $field.Type.VarType "string"}}
+				{{range $validatorIdx, $validator := $field.Validators}}
 
 					{{if eq $validator.Type "len"}}
 	if len({{$struct.VarName}}.{{$name}}{{if eq $field.Type.Type "array"}}[i]{{end}}) != {{$validator.Value}} {
 		errs = append(errs, ValidationError{
 			Field: "{{$name}}",
 						{{if eq $field.Type.Type "array"}}
-			Err: fmt.Sprintf("length error. field \"{{$name}}\" need to be {{$validator.Value}} length in index %d", i),
+			Err: fmt.Sprintf("field {{$name}} must be length is {{$validator.Value}} in index %d", i),
 						{{else}}
-			Err: "length error. field \"{{$name}}\" need to be {{$validator.Value}} length",
+			Err: "field {{$name}} must be length is {{$validator.Value}}",
 						{{end}}
 		})
 	}
 					{{end}}
 
-	{{if eq $validator.Type "regexp"}}
+					{{if eq $validator.Type "regexp"}}
 	{
 		matched, err := regexp.MatchString("{{$validator.Value}}", {{$struct.VarName}}.{{$name}}{{if eq $field.Type.Type "array"}}[i]{{end}})
 		if err != nil {
@@ -62,71 +64,67 @@ func ({{$struct.VarName}} {{$struct.Name}}) Validate() ([]ValidationError, error
 			errs = append(errs, ValidationError{
 				Field: "{{$name}}",
 						{{if eq $field.Type.Type "array"}}
-				Err: fmt.Sprintf("regexp err. field \"{{$name}}\" not mantch with regexp \"{{$validator.Value}}\" in index %d", i),
+				Err: fmt.Sprintf("field {{$name}} must be in regexp {{$validator.Value}} in index %d", i),
 						{{else}}
-				Err: "regexp err. field \"{{$name}}\" not mantch with regexp \"{{$validator.Value}}\"",
+				Err: "field {{$name}} must be in regexp {{$validator.Value}}",
 						{{end}}
 			})
 		}
 	}
-	{{end}}
+					{{end}}
 
-	{{if eq $validator.Type "in"}}
+					{{if eq $validator.Type "in"}}
 	if !({{range $valueIdx, $value := $validator.Value}}{{if eq $valueIdx 0}}{{else}} ||{{end}} {{$struct.VarName}}.{{$name}}{{if eq $field.Type.Type "array"}}[i]{{end}} == "{{$value}}"{{end}}) {
 		errs = append(errs, ValidationError{
 			Field: "{{$name}}",
 						{{if eq $field.Type.Type "array"}}
-			Err: fmt.Sprintf("field \"{{$name}}\" not in range {{$validator.Value}} in index %d", i),
+			Err: fmt.Sprintf("field {{$name}} must be in range {{$validator.Value}} in index %d", i),
 						{{else}}
-			Err: "field \"{{$name}}\"not in range {{$validator.Value}}",
+			Err: "field {{$name}} must be in range {{$validator.Value}}",
 						{{end}}
 		})
 	}
 					{{end}}
 				{{end}}
 			{{end}}
-{{/*
-If validating field has type is "int"
-*/}}
-			{{if eq $field.Name "int"}}
-				{{range $validatorId, $validator := $field.Validators}}
-{{/*
-Validator type is ValidateTypeMin
-*/}}
+
+			{{if eq $field.Type.VarType "int"}}
+				{{range $validatorIdx, $validator := $field.Validators}}
+
 					{{if eq $validator.Type "min"}}
 	if {{$struct.VarName}}.{{$name}}{{if eq $field.Type.Type "array"}}[i]{{end}} < {{$validator.Value}} {
 		errs = append(errs, ValidationError{
 			Field: "{{$name}}",
 						{{if eq $field.Type.Type "array"}}
-			Err: fmt.Sprintf("field \"{{$name}}\" min should be {{$validator.Value}} in index %d", i),
+			Err: fmt.Sprintf("field {{$name}} must be min is {{$validator.Value}} in index %d", i),
 						{{else}}
-			Err: "field \"{{$name}}\" min should be {{$validator.Value}}",
+			Err: "field {{$name}} must be min is {{$validator.Value}}",
 						{{end}}
 		})
 	}
 					{{end}}
 
-	{{if eq $validator.Type "max"}}
+					{{if eq $validator.Type "max"}}
 	if {{$struct.VarName}}.{{$name}}{{if eq $field.Type.Type "array"}}[i]{{end}} > {{$validator.Value}} {
 		errs = append(errs, ValidationError{
 			Field: "{{$name}}",
 						{{if eq $field.Type.Type "array"}}
-			Err: fmt.Sprintf("field \"{{$name}}\" max should be {{$validator.Value}} in index %d", i),
+			Err: fmt.Sprintf("field {{$name}} must be max is {{$validator.Value}} in index %d", i),
 						{{else}}
-			Err: "field \"{{$name}}\" max should be {{$validator.Value}}",
+			Err: "field {{$name}} must be max is {{$validator.Value}}",
 						{{end}}
 		})
 	}
-	{{end}}
+					{{end}}
 
-	{{if eq $validator.Type "in"}}
+					{{if eq $validator.Type "in"}}
 	if !({{range $valueIdx, $value := $validator.Value}}{{if eq $valueIdx 0}}{{else}} ||{{end}} {{$struct.VarName}}.{{$name}}{{if eq $field.Type.Type "array"}}[i]{{end}} == {{$value}}{{end}}) {
 		errs = append(errs, ValidationError{
 			Field: "{{$name}}",
 						{{if eq $field.Type.Type "array"}}
-			Err: fmt.Sprintf("field \"{{$name}}\" not in range {{$validator.Value}} in index %d", i),
+			Err: fmt.Sprintf("field {{$name}} must be in range {{$validator.Value}} in index %d", i),
 						{{else}}
-			Err: "field \"{{$name}}\" not in range {{$validator.Value}}",
+			Err: "field {{$name}} must be in range {{$validator.Value}}",
 						{{end}}
 		})
 	}
@@ -172,8 +170,8 @@ func CreateTemplate(file GeneratatedFile) (bytes.Buffer, error) {
 
 	templateData := TemplateData{
 		PackageName: file.Name,
-		Imports: importsList,
-		Structs: file.Structs,
+		Imports:     importsList,
+		Structs:     file.Structs,
 	}
 
 	var tplBuffer bytes.Buffer
