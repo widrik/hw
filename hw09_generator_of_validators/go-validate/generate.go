@@ -1,20 +1,79 @@
 package main
 
 import (
+	"io"
 	"log"
 	"os"
+	"strings"
+
+	"go/ast"
+	"go/format"
+	"go/parser"
+	"go/token"
+	"path/filepath"
 )
 
-func  Generate(fileName string) (error)  {
-	// Подготавливаем типы для записи
+type GeneratatedFile struct {
+	Name    string
+	Structs []Struct
+}
 
-	// Парсим файл
+type Struct struct {
+	Name    string
+	VarName string
+	Fields  []Field
+}
 
+type Field struct {
+	Names      []string
+	Type       FieldType
+	Validators []Validator
+}
 
-	// На основе спарсенных данных собираем из темплейтов результат
+type FieldType struct {
+	VarType string
+	Type    string
+}
 
+type Validator struct {
+	Type  string
+	Value interface{}
+}
 
-	err := writeResult(fileName, resultData)
+func Generate(fileName string) (error) {
+	astFile, err := parseFile(fileName)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	resultFileName := strings.ReplaceAll(fileName, filepath.Ext(fileName), "_validator.go")
+	resultFile, err := os.Create(resultFileName)
+	defer func() {
+		err := resultFile.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+	if err != nil {
+		return err
+	}
+
+	structsData, err := CreateStructsData(*astFile)
+	if err != nil {
+		return err
+	}
+
+	template, err := CreateTemplate(structsData)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	resultedTemplate, err := format.Source(template.Bytes())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = io.WriteString(resultFile, string(resultedTemplate))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -22,19 +81,11 @@ func  Generate(fileName string) (error)  {
 	return nil
 }
 
-func writeResult(fileName string, resultData []byte) error {
-	fileName = "validate_" + fileName
-
-	resultFile, err := os.Create(fileName)
+func parseFile(fileName string) (file *ast.File, err error) {
+	astFile, err := parser.ParseFile(token.NewFileSet(), fileName, nil, 0)
 	if err != nil {
-		return err
-	}
-	defer resultFile.Close()
-
-	_, err = resultFile.Write(resultData)
-	if err != nil {
-		return err
+		return
 	}
 
-	return nil
+	return astFile, err
 }
