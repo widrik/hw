@@ -76,7 +76,7 @@ func convertDataToStruct(typeSpec ast.TypeSpec, types map[string]string) (*Struc
 			continue
 		}
 
-		fieldType := prepareFieldType(field.Type)
+		fieldType := createFieldType(field.Type)
 		if fieldType == nil {
 			continue
 		}
@@ -165,7 +165,7 @@ func getAvailableTypes(decls []ast.Decl) map[string]string {
 	return baseTypes
 }
 
-func prepareFieldType(expression ast.Expr) *FieldType {
+func createFieldType(expression ast.Expr) *FieldType {
 	switch expressionType := expression.(type) {
 	case *ast.Ident:
 		return &FieldType{
