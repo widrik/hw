@@ -1,0 +1,50 @@
+version: '3'
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: levshina
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: calendar
+    volumes:
+      - /tmp/database-data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+  calendar:
+    build:
+      context: .
+      dockerfile: build/calendar/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8090:8090"
+    depends_on:
+      - database
+    volumes:
+      - "./configs/main.json:/app/main.json"
+      - "./logs/:/app/logs/"
+      - "./migrations/:/app/migrations"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+  scheduler:
+    build:
+      context: .
+      dockerfile: build/scheduler/Dockerfile
+    depends_on:
+      - rabbitmq
+    volumes:
+      - "./configs/scheduler.json:/app/config.json"
+      - "./logs/:/app/logs/"
+  sender:
+    build:
+      context: .
+      dockerfile: build/sender/Dockerfile
+    depends_on:
+      - rabbitmq
+    volumes:
+      - "./configs/sender.json:/app/sender.json"
+      - "./logs/:/app/logs/"
+      - "./tests/integration/out.txt:/app/out.txt"
