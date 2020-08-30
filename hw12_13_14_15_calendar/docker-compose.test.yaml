@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: levshina
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: calendar
+      POSTGRES_DB: calendar_test
     volumes:
       - /tmp/database-data:/var/lib/postgresql/data/
     ports:
