@@ -38,10 +38,10 @@ down:
 
 bdd:
 	set -e ;\
-    docker-compose -f docker-compose.test.yml up -d ;\
+    docker-compose -f docker-compose.test.yaml up -d ;\
     test_status_code=0 ;\
-    chmod +x /tests/test_integration.sh ;\
-    ./tests/integration.sh || test_status_code=$$? ;\
-    docker-compose -f docker-compose.test.yml down ;\
+    chmod +x integration_test.sh ;\
+    ./integration_test.sh || test_status_code=$$? ;\
+    docker-compose -f docker-compose.test.yaml down ;\
     exit $$test_status_code ;\
 

@@ -20,7 +20,7 @@ services:
     depends_on:
       - database
     volumes:
-      - "./configs/main.json:/app/main.json"
+      - "./config/main.json:/app/main.json"
       - "./logs/:/app/logs/"
       - "./migrations/:/app/migrations"
 
@@ -36,7 +36,7 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - "./configs/scheduler.json:/app/config.json"
+      - "./config/scheduler.json:/app/config.json"
       - "./logs/:/app/logs/"
   sender:
     build:
@@ -45,6 +45,5 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - "./configs/sender.json:/app/sender.json"
+      - "./config/rabbit.json:/app/rabbit.json"
       - "./logs/:/app/logs/"
-      - "./tests/test.txt:/app/test.txt"
