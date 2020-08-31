@@ -29,3 +29,19 @@ install-deps:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint
 
 .PHONY: build run test lint clean migrate generate
+
+up:
+	docker-compose up -d --build
+
+down:
+	docker-compose down
+
+bdd:
+	set -e ;\
+    docker-compose -f docker-compose.test.yml up -d ;\
+    test_status_code=0 ;\
+    chmod +x /tests/test_integration.sh ;\
+    ./tests/integration.sh || test_status_code=$$? ;\
+    docker-compose -f docker-compose.test.yml down ;\
+    exit $$test_status_code ;\
+
