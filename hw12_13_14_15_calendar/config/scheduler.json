@@ -8,7 +8,7 @@
     "Port": 5081
   },
   "Logging": {
-    "File": "./logs/log_rabbit.txt",
+    "File": "./logs/scheduler/log.txt",
     "Level": "debug"
   }
 }
