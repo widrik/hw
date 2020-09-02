@@ -11,7 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
-	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/app"
+	app "github.com/widrik/hw/hw12_13_14_15_calendar/internal/app/calendar"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/config"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/baserepo"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/inmemory"

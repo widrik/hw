@@ -10,7 +10,7 @@ import (
 	ginzap "github.com/akath19/gin-zap"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/app"
+	app "github.com/widrik/hw/hw12_13_14_15_calendar/internal/app/calendar"
 	"github.com/widrik/hw/hw12_13_14_15_calendar/internal/db/baserepo"
 	"go.uber.org/zap"
 )

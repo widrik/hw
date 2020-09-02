@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/akath19/gin-zap v0.0.0-20180806194049-1d9e5171c53e
+	github.com/cenkalti/backoff/v3 v3.2.2
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
@@ -20,6 +21,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.7.0
+	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.6.1
 	go.uber.org/zap v1.15.0
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
