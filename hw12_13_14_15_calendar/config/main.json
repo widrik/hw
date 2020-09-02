@@ -1,11 +1,11 @@
 {
   "HTTPServer": {
-    "Host": "127.0.0.1",
-    "Port": 5080
+    "Host": "0.0.0.0",
+    "Port": 8080
   },
   "GRPCServer": {
-    "Host": "127.0.0.1",
-    "Port": 5081
+    "Host": "0.0.0.0",
+    "Port": 8090
   },
   "Logging": {
     "File": "./logs/log.txt",
@@ -15,10 +15,10 @@
     "Type": "inmemory"
   },
   "Database": {
-    "Name": "levshina",
+    "Name": "calendar",
     "Host": "127.0.0.1",
     "Port": 5432,
     "User": "levshina",
-    "Password": ""
+    "Password": "password"
   }
 }

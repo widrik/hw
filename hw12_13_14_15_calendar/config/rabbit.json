@@ -4,7 +4,7 @@
   "QueueName": "calendar_queue",
   "ExchangeName": "events",
   "Logging": {
-    "File": "./logs/log_rabbit.txt",
+    "File": "./logs/rabbit/log.txt",
     "Level": "debug"
   }
 }

@@ -1,2 +1,6 @@
 .DS_Store
 /logs/log.txt
+.DS_Store
+bin
+tmp
+/tests/.env
